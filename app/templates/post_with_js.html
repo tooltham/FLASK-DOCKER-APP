@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>POST with JavaScript</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .container {
+                background: #ffffff;
+                padding: 20px 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 400px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                color: #333;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            label {
+                font-size: 1rem;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            input {
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-bottom: 15px;
+            }
+
+            button {
+                padding: 10px;
+                font-size: 1rem;
+                color: #fff;
+                background-color: #007bff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            .alert {
+                margin-top: 20px;
+                padding: 10px;
+                background-color: #e7f3fe;
+                color: #31708f;
+                border: 1px solid #bce8f1;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                white-space: pre-wrap;
+                /* แสดง JSON ในรูปแบบที่จัดระเบียบ */
+                font-family: monospace;
+                /* ใช้ฟอนต์แบบ monospace สำหรับ JSON */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Send POST Request to Flask API</h1>
+            <form id="postForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <label for="message">Message:</label>
+                <input type="text" id="message" name="message" placeholder="Enter your message" required>
+                <button type="submit">Send</button>
+            </form>
+            <div id="response" class="alert" style="display: none;"></div>
+        </div>
+
+        <script>
+            document.getElementById('postForm').addEventListener('submit', async (e) => {
+                e.preventDefault(); // ป้องกันการรีเฟรชหน้า
+                const name = document.getElementById('name').value;
+                const message = document.getElementById('message').value;
+
+                try {
+                    const response = await fetch('http://localhost:5005/api/echo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, message })
+                    });
+
+                    const result = await response.json();
+                    console.log(result); // ดูผลลัพธ์ใน Console
+
+                    const responseDiv = document.getElementById('response');
+                    responseDiv.style.display = 'block';
+                    responseDiv.textContent = JSON.stringify(result, null, 2); // จัดรูปแบบ JSON
+                } catch (error) {
+                    alert('Error: Unable to send request');
+                    console.error(error);
+                }
+            });
+        </script>
+    </body> git clone <repository-url>
+
+</html>
